@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>T: MVC - Model, View, Controller</h1>
+
+    <div id="speciesSelect" class="selects"></div>
+    <div id="colorsSelect" class="selects"></div>
+    <div id="animalsSelect" class="selects"></div>
+    <div style="clear: both"></div>
+
+    <input type="submit" id="addButton" value="add one">
+    <input type="submit" id="getButton" value="get all">
+    <input type="submit" id="deleteButton" value="delete selected">
+    <input type="submit" id="updateButton" value="update selected">
+
+    <script>
+
+        generateSelectsChildDiv = (innerText) => {
+            let div = document.createElement("div")
+            div.innerText = innerText
+            return div
+        }
+
+        let specie = ""
+        let color = ""
+        let selectedAnimal = {}
+
+        let speciesSelect = document.getElementById("speciesSelect")
+        let colorsSelect = document.getElementById("colorsSelect")
+        let animalsSelect = document.getElementById("animalsSelect")
+
+        let addButton = document.getElementById("addButton")
+        let getButton = document.getElementById("getButton")
+        let deleteButton = document.getElementById("deleteButton")
+        let updateButton = document.getElementById("updateButton")
+
+
+        speciesSelect.appendChild(generateSelectsChildDiv("kot"))
+        speciesSelect.appendChild(generateSelectsChildDiv("pies"))
+        speciesSelect.appendChild(generateSelectsChildDiv("krowa"))
+
+        for (let div of speciesSelect.childNodes) {
+            div.onclick = () => {
+                specie = div.innerText
+            }
+        }
+
+        colorsSelect.appendChild(generateSelectsChildDiv("white"))
+        colorsSelect.appendChild(generateSelectsChildDiv("black"))
+        colorsSelect.appendChild(generateSelectsChildDiv("yellow"))
+
+        for (let div of colorsSelect.childNodes) {
+            div.onclick = () => {
+                color = div.innerText
+            }
+        }
+
+        addButton.onclick = async () => {
+            let data = {
+                name: specie,
+                color: color
+            }
+
+            let res = fetchPostAsync("/add", data)
+            console.log("data: ", res);
+            let div = generateSelectsChildDiv(name)
+            animalsSelect.appendChild(div)
+
+            div.onclick = () => {
+                selectedAnimal = div.hiddenData
+            }
+
+            div.hiddenData = await res
+            div.innerText = div.hiddenData.name
+            console.log("data: ", div.hiddenData);
+
+        }
+
+        getButton.onclick = async () => {
+            alert(JSON.stringify(await fetchPostAsync("/getall", {}), null, 5))
+        }
+
+        deleteButton.onclick = async () => {
+            alert(JSON.stringify(fetchPostAsync("/delete", { selectedAnimal })))
+        }
+
+        fetchPostAsync = async (url, data) => {
+            return new Promise(resolve => {
+
+
+                let tmp = JSON.stringify(data)
+                const OPTIONS = {
+                    method: "POST",
+                    body: tmp
+                }
+
+                fetch(url, OPTIONS)
+                    .then(response => response.json())
+                    .then(data => {
+                        resolve(data)
+                    })
+                    .catch(error => resolve(error))
+            })
+        }
+
+    </script>
+</body>
+
+</html>
