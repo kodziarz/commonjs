@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>T: MVC - Model, View, Controller</h1>
+
+    <div id="speciesSelect" class="selects"></div>
+    <div id="colorsSelect" class="selects"></div>
+    <div id="animalsSelect" class="selects"></div>
+    <div style="clear: both"></div>
+
+    <input type="submit" id="addButton" value="add one">
+    <input type="submit" id="getButton" value="get all">
+    <input type="submit" id="deleteButton" value="delete selected">
+    <input type="submit" id="updateButton" value="update selected">
+
+    <script>
+        const generateSelectsChildDiv = (innerText) => {
+            let div = document.createElement("div")
+            div.innerText = innerText
+            return div
+        }
+
+        let speciesSelect = document.getElementById("speciesSelect")
+        let colorsSelect = document.getElementById("colorsSelect")
+        let animalsSelect = document.getElementById("animalsSelect")
+
+        speciesSelect.appendChild(generateSelectsChildDiv("kot"))
+        speciesSelect.appendChild(generateSelectsChildDiv("pies"))
+        speciesSelect.appendChild(generateSelectsChildDiv("krowa"))
+
+        colorsSelect.appendChild(generateSelectsChildDiv("white"))
+        colorsSelect.appendChild(generateSelectsChildDiv("black"))
+        colorsSelect.appendChild(generateSelectsChildDiv("yellow"))
+    </script>
+</body>
+
+</html>
